@@ -8,7 +8,7 @@ using System.Xml.Serialization;
 var metrics = new MetricsBuilder()
     .Report.ToInfluxDb(
         options => {
-            options.InfluxDb.BaseUri = new Uri("http://192.168.1.10:8086");
+            options.InfluxDb.BaseUri = new Uri("http://localhost:8086");
             options.InfluxDb.Database = "db";
             options.InfluxDb.UserName = "user";
             options.InfluxDb.Password = "password";
@@ -45,3 +45,5 @@ foreach (var file in files)
         //Console.WriteLine($"Produced message to: {result.TopicPartitionOffset}");
     }
 }
+
+SparkPostgresql.Start();
