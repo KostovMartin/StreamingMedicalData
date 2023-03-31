@@ -6,44 +6,57 @@ using System.Text.Json;
 using System.Xml.Serialization;
 
 var metrics = new MetricsBuilder()
-    .Report.ToInfluxDb(
+    .Report.ToConsole(
         options => {
-            options.InfluxDb.BaseUri = new Uri("http://localhost:8086");
-            options.InfluxDb.Database = "db";
-            options.InfluxDb.UserName = "user";
-            options.InfluxDb.Password = "password";
-            options.FlushInterval = TimeSpan.FromSeconds(1);
+            options.FlushInterval = TimeSpan.FromSeconds(60);
         })
     .Build();
 
 var metricsOptions = new TimerOptions
 {
     Context = "StreamingMedicalDataKafka",
-    Name = "Kafka"
+    Name = "KafkaPatient"
 };
 
 var config = new ProducerConfig(new Dictionary<string, string>
 {
     { "bootstrap.servers", "localhost:9092"},
-    { "message.max.bytes", "1000000000"}
+    { "linger.ms", "75" },
+    { "queue.buffering.max.messages", "100000"}
 });
+
 using var producer = new ProducerBuilder<Null, string>(config).Build();
 
 var files = Directory.GetFiles("D:\\CP\\");
 foreach (var file in files)
 {
-    using (metrics.Measure.Timer.Time(metricsOptions))
-    {
-        string xmlString = File.ReadAllText(file);
-        var serializer = new XmlSerializer(typeof(CpFile));
-        using StringReader reader = new(xmlString);
-        var cpFile = serializer.Deserialize(reader) as CpFile;
-        string cpFileJson = JsonSerializer.Serialize(cpFile);
+    string xmlString = File.ReadAllText(file);
+    var serializer = new XmlSerializer(typeof(CpFile));
+    using StringReader reader = new(xmlString);
+    var cpFile = serializer.Deserialize(reader) as CpFile;
 
-        var message = new Message<Null, string> { Value = xmlString };
-        var result = await producer.ProduceAsync("kafka-md-topic", message);
-        //Console.WriteLine($"Produced message to: {result.TopicPartitionOffset}");
+    foreach (var item in cpFile.In)
+    {
+        using (metrics.Measure.Timer.Time(metricsOptions))
+        {
+            string json = JsonSerializer.Serialize(item);
+            var message = new Message<Null, string> { Value = json };
+            producer.Produce("kafka-md-topic-in", message);
+        }
     }
-}
+
+    foreach (var item in cpFile.Out)
+    {
+        using (metrics.Measure.Timer.Time(metricsOptions))
+        {
+
+            string json = JsonSerializer.Serialize(item);
+            var message = new Message<Null, string> { Value = json };
+            producer.Produce("kafka-md-topic-out", message);
+        }
+    }
+};
+
+await Task.WhenAll(metrics.ReportRunner.RunAllAsync());
 
 SparkPostgresql.Start();

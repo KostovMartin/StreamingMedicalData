@@ -22,12 +22,12 @@ internal class SparkPostgresql
         DataFrame patientData = spark
             .Read()
             .Jdbc("jdbc:postgresql://localhost:5432/medical_data", "patient_data", postgresProperties)
-            .Where("Severity IS NOT NULL");
+            .Where("Urgency IS NOT NULL");
 
-        DataFrame extractedFields = patientData.Select("EGN", "Severity", "Delay", "Dead");
+        DataFrame extractedFields = patientData.Select("EGN", "Urgency", "Delay", "Dead");
         extractedFields.CreateOrReplaceTempView("patient_data");
 
-        DataFrame aggregatedData = spark.Sql("SELECT Severity, AVG(Delay), SUM(CAST(Dead AS INT)) FROM patient_data GROUP BY Severity");
+        DataFrame aggregatedData = spark.Sql("SELECT Urgency, AVG(Delay), SUM(CAST(Dead AS INT)) FROM patient_data GROUP BY Severity");
         aggregatedData.Show();
         spark.Stop();
     }
