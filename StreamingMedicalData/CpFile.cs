@@ -1,14 +1,15 @@
-﻿using System.Xml.Serialization;
+﻿using System.ComponentModel.DataAnnotations;
+using System.Xml.Serialization;
 
 namespace StreamingMedicalData;
 
 [XmlRoot(ElementName = "Practice")]
 public class Practice
 {
-
     [XmlElement(ElementName = "branch")]
     public long Branch { get; set; }
 
+    [Key]
     [XmlElement(ElementName = "no")]
     public long No { get; set; }
 
@@ -25,7 +26,7 @@ public class Practice
 [XmlRoot(ElementName = "Patient")]
 public class Patient
 {
-
+    [Key]
     [XmlElement(ElementName = "EGN")]
     public string EGN { get; set; }
 
@@ -36,19 +37,19 @@ public class Patient
     public long Sex { get; set; }
 
     [XmlElement(ElementName = "Given")]
-    public object Given { get; set; }
+    public string Given { get; set; }
 
     [XmlElement(ElementName = "Sur")]
-    public object Sur { get; set; }
+    public string Sur { get; set; }
 
     [XmlElement(ElementName = "Family")]
-    public object Family { get; set; }
+    public string Family { get; set; }
 
     [XmlElement(ElementName = "Address")]
-    public object Address { get; set; }
+    public string Address { get; set; }
 
     [XmlElement(ElementName = "Notes")]
-    public object Notes { get; set; }
+    public string Notes { get; set; }
 
     [XmlElement(ElementName = "personType")]
     public long PersonType { get; set; }
@@ -61,6 +62,7 @@ public class Sender
     [XmlElement(ElementName = "Practice")]
     public Practice Practice { get; set; }
 
+    [Key]
     [XmlElement(ElementName = "uin")]
     public long Uin { get; set; }
 
@@ -77,6 +79,8 @@ public class Sender
 [XmlRoot(ElementName = "sendDiagnose")]
 public class SendDiagnose
 {
+    [Key]
+    public long Id { get; set; }
 
     [XmlElement(ElementName = "primary")]
     public string Primary { get; set; }
@@ -88,6 +92,9 @@ public class SendDiagnose
 [XmlRoot(ElementName = "diagnose")]
 public class Diagnose
 {
+    [Key]
+    public long Id { get; set; }
+
 
     [XmlElement(ElementName = "primary")]
     public string Primary { get; set; }
@@ -99,7 +106,6 @@ public class Diagnose
 [XmlRoot(ElementName = "In")]
 public class In
 {
-
     [XmlElement(ElementName = "sendDiagnose")]
     public List<SendDiagnose> SendDiagnose { get; set; }
 
@@ -109,6 +115,7 @@ public class In
     [XmlElement(ElementName = "sendClinicalPath")]
     public string SendClinicalPath { get; set; }
 
+    [Key]
     [XmlElement(ElementName = "uin")]
     public long Uin { get; set; }
 
@@ -185,17 +192,19 @@ public class In
     public long WeightInGrams { get; set; }
 }
 
-[XmlRoot(ElementName = "dead")]
-public class Dead
-{
-
-    [XmlElement(ElementName = "primary")]
-    public string Primary { get; set; }
-}
+//[XmlRoot(ElementName = "dead")]
+//public class Dead
+//{
+//    [XmlElement(ElementName = "primary")]
+//    public string Primary { get; set; }
+//}
 
 [XmlRoot(ElementName = "epicrisis")]
 public class Epicrisis
 {
+    [Key]
+    public long Id { get; set; }
+
 
     [XmlElement(ElementName = "history")]
     public string History { get; set; }
@@ -250,6 +259,9 @@ public class Epicrisis
 public class OutMainDiag
 {
 
+    [Key]
+    public long Id { get; set; }
+
     [XmlElement(ElementName = "primary")]
     public string Primary { get; set; }
 
@@ -260,6 +272,9 @@ public class OutMainDiag
 [XmlRoot(ElementName = "Procedures")]
 public class Procedures
 {
+
+    [Key]
+    public long Id { get; set; }
 
     [XmlElement(ElementName = "code")]
     public double Code { get; set; }
@@ -280,7 +295,6 @@ public class Procedures
 [XmlRoot(ElementName = "Out")]
 public class Out
 {
-
     [XmlElement(ElementName = "sendDiagnose")]
     public List<SendDiagnose> SendDiagnose { get; set; }
 
@@ -350,11 +364,11 @@ public class Out
     [XmlElement(ElementName = "outMainDiag")]
     public OutMainDiag OutMainDiag { get; set; }
 
-    [XmlElement(ElementName = "outDiags")]
-    public List<OutDiags> OutDiags { get; set; }
+    //[XmlElement(ElementName = "outDiags")]
+    //public List<OutDiags> OutDiags { get; set; }
 
-    [XmlElement(ElementName = "Procedures")]
-    public List<Procedures> Procedures { get; set; }
+    //[XmlElement(ElementName = "Procedures")]
+    //public List<Procedures> Procedures { get; set; }
 
     [XmlElement(ElementName = "bedDays")]
     public long BedDays { get; set; }
@@ -367,6 +381,9 @@ public class Out
 
     [XmlElement(ElementName = "EndCourse")]
     public long EndCourse { get; set; }
+
+    [Key]
+    public string PatientEGN { get; set; }
 
     [XmlElement(ElementName = "Patient")]
     public Patient Patient { get; set; }
@@ -386,8 +403,8 @@ public class Out
     [XmlElement(ElementName = "sendDate")]
     public DateTime SendDate { get; set; }
 
-    [XmlElement(ElementName = "UsedDrug")]
-    public List<UsedDrug> UsedDrug { get; set; }
+    //[XmlElement(ElementName = "UsedDrug")]
+    //public List<UsedDrug> UsedDrug { get; set; }
 
     [XmlElement(ElementName = "HLDateFrom")]
     public DateTime HLDateFrom { get; set; }
@@ -426,12 +443,14 @@ public class Out
     public long OutAPr { get; set; }
 
     [XmlElement(ElementName = "dead")]
-    public Dead Dead { get; set; }
+    public string Dead { get; set; }
 }
 
 [XmlRoot(ElementName = "outDiags")]
 public class OutDiags
 {
+    [Key]
+    public long Id { get; set; }
 
     [XmlElement(ElementName = "primary")]
     public string Primary { get; set; }
@@ -443,6 +462,9 @@ public class OutDiags
 [XmlRoot(ElementName = "Implant")]
 public class Implant
 {
+    [Key]
+    public long Id { get; set; }
+
 
     [XmlElement(ElementName = "productType")]
     public long ProductType { get; set; }
@@ -494,6 +516,9 @@ public class Implant
 public class HistologicalResult
 {
 
+    [Key]
+    public long Id { get; set; }
+
     [XmlElement(ElementName = "code")]
     public double Code { get; set; }
 
@@ -508,6 +533,9 @@ public class HistologicalResult
 public class VerCode
 {
 
+    [Key]
+    public long Id { get; set; }
+
     [XmlElement(ElementName = "Batch_number")]
     public string BatchNumber { get; set; }
 
@@ -518,6 +546,9 @@ public class VerCode
 [XmlRoot(ElementName = "UsedDrug")]
 public class UsedDrug
 {
+
+    [Key]
+    public long Id { get; set; }
 
     [XmlElement(ElementName = "date")]
     public DateTime Date { get; set; }
@@ -535,7 +566,7 @@ public class UsedDrug
     public string ICDDrug { get; set; }
 
     [XmlElement(ElementName = "date_prescr")]
-    public object DatePrescr { get; set; }
+    public string DatePrescr { get; set; }
 
     [XmlElement(ElementName = "PracticeCode_Protocol")]
     public long PracticeCodeProtocol { get; set; }
@@ -556,6 +587,8 @@ public class UsedDrug
 [XmlRoot(ElementName = "resign")]
 public class Resign
 {
+    [Key]
+    public long Id { get; set; }
 
     [XmlElement(ElementName = "OutRefuse")]
     public long OutRefuse { get; set; }
@@ -568,6 +601,9 @@ public class Resign
 public class Diag
 {
 
+    [Key]
+    public long Id { get; set; }
+
     [XmlElement(ElementName = "imeMD")]
     public string ImeMD { get; set; }
 
@@ -579,6 +615,9 @@ public class Diag
 public class Histology
 {
 
+    [Key]
+    public long Id { get; set; }
+
     [XmlElement(ElementName = "NameHS")]
     public string NameHS { get; set; }
 
@@ -589,6 +628,9 @@ public class Histology
 [XmlRoot(ElementName = "Gen_Markers")]
 public class GenMarkers
 {
+    [Key]
+    public long Id { get; set; }
+
 
     [XmlElement(ElementName = "Name")]
     public List<string> Name { get; set; }
@@ -600,6 +642,9 @@ public class GenMarkers
 [XmlRoot(ElementName = "Choise")]
 public class Choise
 {
+
+    [Key]
+    public long Id { get; set; }
 
     [XmlElement(ElementName = "No")]
     public long No { get; set; }
@@ -615,6 +660,9 @@ public class Choise
 public class Evaluation
 {
 
+    [Key]
+    public long Id { get; set; }
+
     [XmlElement(ElementName = "Choise")]
     public List<Choise> Choise { get; set; }
 }
@@ -622,6 +670,9 @@ public class Evaluation
 [XmlRoot(ElementName = "Part_Chemotherapy")]
 public class PartChemotherapy
 {
+
+    [Key]
+    public long Id { get; set; }
 
     [XmlElement(ElementName = "date_Diag")]
     public DateTime DateDiag { get; set; }
@@ -658,6 +709,9 @@ public class PartChemotherapy
 public class ProtDrug
 {
 
+    [Key]
+    public long Id { get; set; }
+
     [XmlElement(ElementName = "Type_Therapy")]
     public long TypeTherapy { get; set; }
 
@@ -690,6 +744,9 @@ public class ProtDrug
 public class AccompanyingDrug
 {
 
+    [Key]
+    public long Id { get; set; }
+
     [XmlElement(ElementName = "Type_Therapy")]
     public long TypeTherapy { get; set; }
 
@@ -710,6 +767,9 @@ public class AccompanyingDrug
 public class Chairman
 {
 
+    [Key]
+    public long Id { get; set; }
+
     [XmlElement(ElementName = "Spec")]
     public long Spec { get; set; }
 
@@ -724,6 +784,9 @@ public class Chairman
 public class Members
 {
 
+    [Key]
+    public long Id { get; set; }
+
     [XmlElement(ElementName = "Spec")]
     public long Spec { get; set; }
 
@@ -737,6 +800,9 @@ public class Members
 [XmlRoot(ElementName = "Protocol_DrugTherapy")]
 public class ProtocolDrugTherapy
 {
+
+    [Key]
+    public long Id { get; set; }
 
     [XmlElement(ElementName = "Patient")]
     public Patient Patient { get; set; }
@@ -787,7 +853,7 @@ public class ProtocolDrugTherapy
     public long LineTherapy { get; set; }
 
     [XmlElement(ElementName = "Scheme")]
-    public object Scheme { get; set; }
+    public string Scheme { get; set; }
 
     [XmlElement(ElementName = "Cycle_Count")]
     public long CycleCount { get; set; }
@@ -818,6 +884,9 @@ public class ProtocolDrugTherapy
 public class PredMarker
 {
 
+    [Key]
+    public long Id { get; set; }
+
     [XmlElement(ElementName = "Choise")]
     public Choise Choise { get; set; }
 }
@@ -825,6 +894,9 @@ public class PredMarker
 [XmlRoot(ElementName = "Part_Hematology")]
 public class PartHematology
 {
+    [Key]
+    public long Id { get; set; }
+
 
     [XmlElement(ElementName = "Pred_Marker")]
     public PredMarker PredMarker { get; set; }
@@ -833,6 +905,9 @@ public class PartHematology
 [XmlRoot(ElementName = "cpFile")]
 public class CpFile
 {
+    [Key]
+    public long Id { get; set; }
+
 
     [XmlElement(ElementName = "Practice")]
     public Practice Practice { get; set; }
